@@ -290,13 +290,15 @@ window.onload = function init() {
         if (!fileLoaded) {
             alert("You have not selected a cube state file.");
         } else {
-            cubePosition = fileContent.slice();
+            cubePosition = cubePos.slice();
+            PHI = phiValue;
+            THETA = thetaValue;
             document.getElementById("files").value = "";
         }
     };
 
     document.getElementById("SaveButton").onclick = function() {
-        saveAs(new Blob([JSON.stringify(cubePosition)], {type: "text/plain;"}), ("cube.txt"));
+        saveAs(new Blob([JSON.stringify({ phi: PHI, thet: THETA, cubepos: cubePosition})], {type: "text/plain;"}), ("cube.txt"));
     };
 
     // Set up WebGL
@@ -370,11 +372,14 @@ function handleFileSelect(e) {
         fileLoaded = true;
         return function(e) {
             fileContent = JSON.parse(reader.result);
+            phiValue = fileContent.phi;
+            thetaValue = fileContent.thet;
+            cubePos = fileContent.cubepos;
             var x, y, z;
             for (x = 0; x < 3; x++) {
             for (y = 0; y < 3; y++) {
                 for (z = 0; z < 3; z++) {
-                fileContent[x][y][z][4].matrix = true;
+                cubePos[x][y][z][4].matrix = true;
                 }
             }
         }
