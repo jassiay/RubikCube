@@ -121,6 +121,290 @@ function toDegree (rad) {
     return rad / Math.PI *180;
 }
 
+var originalMapping = {
+  "orange": "L",
+  "white": "R",
+  "green": "U",
+  "red": "D",
+  "blue": "F",
+  "yellow": "B",
+  "M": "M",
+  "E": "E",
+  "S": "S"
+}
+
+var mappingColor = {
+  "L": "orange",
+  "R": "white",
+  "U": "green",
+  "D": "red",
+  "F": "blue",
+  "B": "yellow",
+  "M": "M",
+  "E": "E",
+  "S": "S"
+}
+
+function callPush(strategy) {
+  if(animationQueue.length < 1000) {
+    var direction = 1;
+    if (strategy == strategy.toLowerCase()) {
+      strategy = strategy.toUpperCase();
+      direction = 0;
+    }
+    var theta = toDegree(THETA)%360;
+    var phi = toDegree(PHI)%360;
+    var front = "blue", top = "green", right = "white";
+    if (up[1] == 1) {
+      if (phi < -315 || (phi >= -45 && phi < 45) || phi >= 315) {
+        front = "green";
+        if (theta < -315 || (theta >= -45 && theta < 45) || theta >= 315) {
+          (phi >=0 && phi <180) || (phi >=-360 && phi <-180) ? top = "yellow": top ="blue";
+          top=="yellow" ? right = "white": right = "orange";
+        } else if ((theta >= -135 && theta < -45) || (theta >= 225 && theta < 315)) {
+          (phi >=0 && phi <180) || (phi >=-360 && phi <-180) ? top = "white": top ="orange";
+          top=="white" ? right = "blue": right = "yellow";
+        } else if ((theta >= -225 && theta < -135) || (theta >=135 && theta < 225)) {
+          (phi >=0 && phi <180) || (phi >=-360 && phi <-180) ? top = "blue": top= "yellow";
+          top=="yellow" ? right = "white": right = "orange";
+        } else if ((theta >= -315 && theta < -225) || (theta >= 45 && theta < 135)) {
+          (phi >=0 && phi <180) || (phi >=-360 && phi <-180) ? top = "orange": top ="white";
+          top=="white" ? right = "blue": right = "yellow";
+        }
+      } else if ((phi >= -225 && phi < -135) || (phi >=135 && phi < 225)){
+        front = "red";
+        if (theta < -315 || (theta >= -45 && theta < 45) || theta >= 315) {
+          (phi >=0 && phi <180) || (phi >=-360 && phi <-180) ? top = "blue" : top = "yellow";
+          top=="yellow" ? right = "orange": right = "white";
+        } else if ((theta >= -135 && theta < -45) || (theta >= 225 && theta < 315)) {
+          (phi >=0 && phi <180) || (phi >=-360 && phi <-180) ? top = "orange": top = "white";
+          top=="white" ? right = "yellow": right = "blue";
+        } else if ((theta >= -225 && theta < -135) || (theta >=135 && theta < 225)) {
+          (phi >=0 && phi <180) || (phi >=-360 && phi <-180) ? top = "yellow": top = "blue";
+          top=="yellow" ? right = "orange": right = "white";
+        } else if ((theta >= -315 && theta < -225) || (theta >= 45 && theta < 135)) {
+          (phi >=0 && phi <180) || (phi >=-360 && phi <-180) ? top = "white": top = "orange";
+          top=="white" ? right = "yellow": right = "blue";
+        }
+      } else {
+        // console.log("side:\n");
+        if ((phi >=0 && phi <180) || (phi >=-360 && phi <-180)) {
+          if (theta < -315 || (theta >= -45 && theta < 45) || theta >= 315) {
+            front = "blue";
+            top = "green";
+            right = "white";
+          } else if ((theta >= -135 && theta < -45) || (theta >= 225 && theta < 315)) {
+            front = "orange";
+            top = "green";
+            right = "blue";
+          } else if ((theta >= -225 && theta < -135) || (theta >=135 && theta < 225)) {
+            front = "yellow";
+            top = "green";
+            right = "orange";
+          } else if ((theta >= -315 && theta < -225) || (theta >= 45 && theta < 135)) {
+            front = "white";
+            top = "green";
+            right = "yellow";
+          }
+        } else {
+          if (theta < -315 || (theta >= -45 && theta < 45) || theta >= 315) {
+            front = "yellow";
+            top = "green";
+            right = "orange";
+          } else if ((theta >= -135 && theta < -45) || (theta >= 225 && theta < 315)) {
+            front = "white";
+            top = "green";
+            right = "yellow";
+          } else if ((theta >= -225 && theta < -135) || (theta >=135 && theta < 225)) {
+            front = "blue";
+            top = "green";
+            right = "white";
+          } else if ((theta >= -315 && theta < -225) || (theta >= 45 && theta < 135)) {
+            front = "orange";
+            top = "green";
+            right = "blue";
+          }
+        }
+      }
+    } else {
+      if (phi < -315 || (phi >= -45 && phi < 45) || phi >= 315) {
+        front = "green";
+        if (theta < -315 || (theta >= -45 && theta < 45) || theta >= 315) {
+          (phi >=0 && phi <180) || (phi >=-360 && phi <-180) ? top = "blue" : top = "yellow";
+          top=="yellow" ? right = "white": right = "orange";
+        } else if ((theta >= -135 && theta < -45) || (theta >= 225 && theta < 315)) {
+          (phi >=0 && phi <180) || (phi >=-360 && phi <-180) ? top = "orange": top = "white";
+          top=="white" ? right = "blue": right = "yellow";
+        } else if ((theta >= -225 && theta < -135) || (theta >=135 && theta < 225)) {
+          (phi >=0 && phi <180) || (phi >=-360 && phi <-180) ? top = "yellow": top = "blue";
+          top=="yellow" ? right = "white": right = "orange";
+        } else if ((theta >= -315 && theta < -225) || (theta >= 45 && theta < 135)) {
+          (phi >=0 && phi <180) || (phi >=-360 && phi <-180) ? top = "white": top = "orange";
+          top=="white" ? right = "blue": right = "yellow";
+        }
+      } else if ((phi >= -225 && phi < -135) || (phi >=135 && phi < 225)){
+        front = "red";
+        if (theta < -315 || (theta >= -45 && theta < 45) || theta >= 315) {
+          (phi >=0 && phi <180) || (phi >=-360 && phi <-180) ? top = "yellow": top ="blue";
+          top=="yellow" ? right = "orange": right = "white";
+        } else if ((theta >= -135 && theta < -45) || (theta >= 225 && theta < 315)) {
+          (phi >=0 && phi <180) || (phi >=-360 && phi <-180) ? top = "white": top ="orange";
+          top=="white" ? right = "yellow": right = "blue";
+        } else if ((theta >= -225 && theta < -135) || (theta >=135 && theta < 225)) {
+          (phi >=0 && phi <180) || (phi >=-360 && phi <-180) ? top = "blue": top= "yellow";
+          top=="yellow" ? right = "orange": right = "white";
+        } else if ((theta >= -315 && theta < -225) || (theta >= 45 && theta < 135)) {
+          (phi >=0 && phi <180) || (phi >=-360 && phi <-180) ? top = "orange": top ="white";
+          top=="white" ? right = "yellow": right = "blue";
+        }
+      } else {
+        // console.log("side:\n");
+        if ((phi >=0 && phi <180) || (phi >=-360 && phi <-180)) {
+          if (theta < -315 || (theta >= -45 && theta < 45) || theta >= 315) {
+            front = "blue";
+            top = "red";
+            right = "orange";
+          } else if ((theta >= -135 && theta < -45) || (theta >= 225 && theta < 315)) {
+            front = "orange";
+            top = "red";
+            right = "yellow";
+          } else if ((theta >= -225 && theta < -135) || (theta >=135 && theta < 225)) {
+            front = "yellow";
+            top = "red";
+            right = "white";
+          } else if ((theta >= -315 && theta < -225) || (theta >= 45 && theta < 135)) {
+            front = "white";
+            top = "red";
+            right = "blue";
+          }
+        } else {
+          if (theta < -315 || (theta >= -45 && theta < 45) || theta >= 315) {
+            front = "yellow";
+            top = "red";
+            right = "white";
+          } else if ((theta >= -135 && theta < -45) || (theta >= 225 && theta < 315)) {
+            front = "white";
+            top = "red";
+            right = "blue";
+          } else if ((theta >= -225 && theta < -135) || (theta >=135 && theta < 225)) {
+            front = "blue";
+            top = "red";
+            right = "orange";
+          } else if ((theta >= -315 && theta < -225) || (theta >= 45 && theta < 135)) {
+            front = "orange";
+            top = "red";
+            right = "yellow";
+          }
+        }
+      }
+    }
+
+    makeRestFaces(front, top, right);
+    // console.log(front, top, right);
+    // console.log("Theta", theta, "Phi:", phi, up);
+
+    if (top=="green" || top =="red") {
+      if (front == "blue" || front == "yellow"){
+        mappingColor["M"] = "M"; 
+        mappingColor["S"] = "S"; 
+        mappingColor["E"] = "E";
+        if (strategy=="M"&&(top=="red"&&front!="yellow" || top!="red"&&front=="yellow")){
+          direction == 1? direction=0:direction=1;
+        }
+        if (strategy=="E"&&top=="red"){
+          direction == 1? direction=0:direction=1;
+        }
+        if (strategy=="S"&&front=="yellow"){
+          direction == 1? direction=0:direction=1;
+        }
+      } else if (front == "orange" || front == "white") {
+        mappingColor["M"] = "S";  
+        mappingColor["S"] = "M"; 
+        mappingColor["E"] = "E";
+        if (strategy=="M"&&(top=="red"&&front!="orange" || top!="red"&&front=="orange")){
+          direction == 1? direction=0:direction=1;
+        }
+        if (strategy=="E"&&top=="red"){
+          direction == 1? direction=0:direction=1;
+        }
+        if (strategy=="S"&&front=="white"){
+          direction == 1? direction=0:direction=1;
+        }
+      } 
+    } else if (front == "red" || front =="green") {
+      if (top == "blue" || top =="yellow") {
+        mappingColor["S"] = "E"; 
+        mappingColor["E"] = "S"; 
+        mappingColor["M"] = "M";
+        if (strategy=="M"&&(top=="blue"&&front=="green")||(top=="yellow"&&front=="red")){
+          direction == 1? direction=0:direction=1;
+        }
+        if (strategy=="E"&&(top=="blue"&&front=="green")||(top=="yellow"&&front=="red")){
+          direction == 1? direction=0:direction=1;
+        }
+        if (strategy=="S"&&front=="green"){
+          direction == 1? direction=0:direction=1;
+        }
+      } else if (top == "orange" || top == "white") {
+        mappingColor["S"] = "E";  
+        mappingColor["E"] = "M"; 
+        mappingColor["M"] = "S";
+        if (strategy=="M"&&(top=="white"&&front=="green")||(top=="orange"&&front=="red")){
+          direction == 1? direction=0:direction=1;
+        }
+        if (strategy=="E"&&(top=="orange"&&front=="green")||(top=="white"&&front=="red")){
+          direction == 1? direction=0:direction=1;
+        }
+        if (strategy=="S"&&front=="red"){
+          direction == 1? direction=0:direction=1;
+        }
+      } 
+    }
+    
+    colorIndex = mappingColor[strategy];
+    newAction = originalMapping[colorIndex];
+    if (direction==0) {
+      newAction = newAction.toLowerCase();
+    }
+    // console.log(strategy, newAction);
+    animationQueue.push(newAction);
+  } else {
+    console.log("queue full!");
+  }
+}
+
+function makeRestFaces(f,t,r) {
+    b = oppositeFace(f);
+    d = oppositeFace(t);
+    l = oppositeFace(r);
+
+    mappingColor["F"] = f;
+    mappingColor["U"] = t;
+    mappingColor["R"] = r;
+    mappingColor["B"] = b;
+    mappingColor["D"] = d;
+    mappingColor["L"] = l;
+    // console.log(mappingColor);
+
+}
+
+function oppositeFace(face) {
+  if (face=="orange"){
+    return "white";
+  } else if (face == "white") {
+    return "orange";
+  } else if (face == "blue") {
+    return "yellow";
+  } else if (face == "yellow") {
+    return "blue";
+  } else if (face == "red") {
+    return "green";
+  } else if (face == "green") {
+    return "red";
+  }
+}
+
+
 var strategies = {
     "L": ["L","F","R","B","L","F","R","B"],
     "R": ["R","B","L","F","R","B","L","F"],
@@ -142,36 +426,36 @@ var strategies = {
     "s": ["S","m","s","M","s","M","S","m"]
 }
 
-function callPush(strategy) {
-    var strat = strategies[strategy];
-    if(animationQueue.length < 1000) {
-      var theta = toDegree(THETA)%360;
-      var phi = toDegree(PHI)%360;
-      if ((phi >= -180 && phi < 0) || (phi >= 180 && phi < 360)) {
-        if (theta < -315 || (theta >= -45 && theta < 45) || theta >= 315) {
-          animationQueue.push(strat[0]);
-        } else if ((theta >= -315 && theta < -225) || (theta >= 45 && theta < 135)) {
-          animationQueue.push(strat[1]);
-        } else if ((theta >= -225 && theta < -135) || (theta >=135 && theta < 225)) {
-          animationQueue.push(strat[2]);
-        } else if ((theta >= -135 && theta < -45) || (theta >= 215 && theta < 315)) {
-          animationQueue.push(strat[3]);
-        }
-      } else {
-        if (theta < -315 || (theta >= -45 && theta < 45) || theta >= 315) {
-          animationQueue.push(strat[4]);
-        } else if ((theta >= -315 && theta < -225) || (theta >= 45 && theta < 135)) {
-          animationQueue.push(strat[5]);
-        } else if ((theta >= -225 && theta < -135) || (theta >=135 && theta < 225)) {
-          animationQueue.push(strat[6]);
-        } else if ((theta >= -135 && theta < -45) || (theta >= 215 && theta < 315)) {
-          animationQueue.push(strat[7]);
-        }
-      }
-    } else {
-      console.log("queue full!");
-    }
-  }
+// function callPush(strategy) {
+//     var strat = strategies[strategy];
+//     if(animationQueue.length < 1000) {
+//       var theta = toDegree(THETA)%360;
+//       var phi = toDegree(PHI)%360;
+//       if ((phi >= -180 && phi < 0) || (phi >= 180 && phi < 360)) {
+//         if (theta < -315 || (theta >= -45 && theta < 45) || theta >= 315) {
+//           animationQueue.push(strat[0]);
+//         } else if ((theta >= -315 && theta < -225) || (theta >= 45 && theta < 135)) {
+//           animationQueue.push(strat[1]);
+//         } else if ((theta >= -225 && theta < -135) || (theta >=135 && theta < 225)) {
+//           animationQueue.push(strat[2]);
+//         } else if ((theta >= -135 && theta < -45) || (theta >= 215 && theta < 315)) {
+//           animationQueue.push(strat[3]);
+//         }
+//       } else {
+//         if (theta < -315 || (theta >= -45 && theta < 45) || theta >= 315) {
+//           animationQueue.push(strat[4]);
+//         } else if ((theta >= -315 && theta < -225) || (theta >= 45 && theta < 135)) {
+//           animationQueue.push(strat[5]);
+//         } else if ((theta >= -225 && theta < -135) || (theta >=135 && theta < 225)) {
+//           animationQueue.push(strat[6]);
+//         } else if ((theta >= -135 && theta < -45) || (theta >= 215 && theta < 315)) {
+//           animationQueue.push(strat[7]);
+//         }
+//       }
+//     } else {
+//       console.log("queue full!");
+//     }
+//   }
 
 // init() function
 window.onload = function init() {
@@ -213,7 +497,6 @@ window.onload = function init() {
     var dY = e.pageY - old_mouse_y;
 
     var absPhi = Math.abs(toDegree(PHI)%360);
-
     if (absPhi > 180.0 && absPhi < 270.0 || PHI < 0.0) {
         if (toDegree(PHI)%360 < -180.0) {
         up = vec3(0.0, 1.0, 0.0);
