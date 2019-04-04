@@ -404,59 +404,6 @@ function oppositeFace(face) {
   }
 }
 
-
-var strategies = {
-    "L": ["L","F","R","B","L","F","R","B"],
-    "R": ["R","B","L","F","R","B","L","F"],
-    "U": ["D","D","D","D","U","U","U","U"],
-    "D": ["U","U","U","U","D","D","D","D"],
-    "F": ["B","L","F","R","F","R","B","L"],
-    "B": ["F","R","B","L","B","L","F","R"],
-    "M": ["M","S","m","s","M","S","m","s"],
-    "E": ["e","e","e","e","E","E","E","E"],
-    "S": ["s","M","S","m","S","m","s","M"],
-    "l": ["l","f","r","b","l","f","r","b"],
-    "r": ["r","b","l","f","r","b","l","f"],
-    "u": ["d","d","d","d","u","u","u","u"],
-    "d": ["u","u","u","u","d","d","d","d"],
-    "f": ["b","l","f","r","f","r","b","l"],
-    "b": ["f","r","b","l","b","l","f","r"],
-    "m": ["m","s","M","S","m","s","M","S"],
-    "e": ["E","E","E","E","e","e","e","e"],
-    "s": ["S","m","s","M","s","M","S","m"]
-}
-
-// function callPush(strategy) {
-//     var strat = strategies[strategy];
-//     if(animationQueue.length < 1000) {
-//       var theta = toDegree(THETA)%360;
-//       var phi = toDegree(PHI)%360;
-//       if ((phi >= -180 && phi < 0) || (phi >= 180 && phi < 360)) {
-//         if (theta < -315 || (theta >= -45 && theta < 45) || theta >= 315) {
-//           animationQueue.push(strat[0]);
-//         } else if ((theta >= -315 && theta < -225) || (theta >= 45 && theta < 135)) {
-//           animationQueue.push(strat[1]);
-//         } else if ((theta >= -225 && theta < -135) || (theta >=135 && theta < 225)) {
-//           animationQueue.push(strat[2]);
-//         } else if ((theta >= -135 && theta < -45) || (theta >= 215 && theta < 315)) {
-//           animationQueue.push(strat[3]);
-//         }
-//       } else {
-//         if (theta < -315 || (theta >= -45 && theta < 45) || theta >= 315) {
-//           animationQueue.push(strat[4]);
-//         } else if ((theta >= -315 && theta < -225) || (theta >= 45 && theta < 135)) {
-//           animationQueue.push(strat[5]);
-//         } else if ((theta >= -225 && theta < -135) || (theta >=135 && theta < 225)) {
-//           animationQueue.push(strat[6]);
-//         } else if ((theta >= -135 && theta < -45) || (theta >= 215 && theta < 315)) {
-//           animationQueue.push(strat[7]);
-//         }
-//       }
-//     } else {
-//       console.log("queue full!");
-//     }
-//   }
-
 // init() function
 window.onload = function init() {
     canvas = document.getElementById("gl-canvas");
